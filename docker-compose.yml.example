@@ -1,0 +1,12 @@
+---
+version: "3.8"
+services:
+  NN_server-status-api:
+    image: p0t4t0sandwich/neuralnexus:server-status-api
+    container_name: NN_server-status-api
+    environment:
+      - TZ=UTC
+    ports:
+      - "0.0.0.0:3000:3000"
+      - "0.0.0.0:50051:50051"
+    restart: unless-stopped
