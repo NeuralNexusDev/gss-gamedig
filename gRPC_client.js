@@ -25,36 +25,3 @@ export async function Client(message) {
         console.log(response);
     });
 }
-
-const message1 = {
-    game: "minecraft",
-    host: "mc.thexpnetwork.com"
-}
-
-const message2 = {
-    game: "minecraft",
-    host: "sev.thexpnetwork.com"
-}
-
-const message3 = {
-    game: "minecraft",
-    host: "sb3.thexpnetwork.com"
-}
-
-const message4 = {
-    game: "7d2d",
-    host: "7dtd.thexpnetwork.com",
-    port: 27015
-}
-
-const message5 = {
-    game: "arkse",
-    host: "ark.thexpnetwork.com",
-    port: 7777
-}
-
-//Client(message1)
-// Client(message2)
-// Client(message3)
-// Client(message4)
-Client(message5)

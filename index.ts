@@ -1,6 +1,6 @@
 const PROTO_PATH = './server_status.proto';
-import { loadPackageDefinition, Server, ServerCredentials } from '@grpc/grpc-js';
-import { loadSync } from '@grpc/proto-loader';
+import { GrpcObject, loadPackageDefinition, Server, ServerCredentials } from '@grpc/grpc-js';
+import { loadSync, PackageDefinition } from '@grpc/proto-loader';
 import express, { Express } from "express";
 import bodyParser from "body-parser";
 import Gamedig from 'gamedig';
@@ -58,9 +58,9 @@ const options = {
 }
 
 // gRPC setup
-const packageDefinition = loadSync(PROTO_PATH, options);
-const commandProto = loadPackageDefinition(packageDefinition);
-const server = new Server();
+const packageDefinition: PackageDefinition = loadSync(PROTO_PATH, options);
+const commandProto: GrpcObject = loadPackageDefinition(packageDefinition);
+const server: Server = new Server();
 
 // gRPC service
 server.addService((<any>commandProto.Status).service, {
