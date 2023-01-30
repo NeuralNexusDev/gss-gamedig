@@ -1,5 +1,5 @@
 const PROTO_PATH = './server_status.proto';
-import { GrpcObject, loadPackageDefinition, Server, ServerCredentials } from '@grpc/grpc-js';
+import { credentials, GrpcObject, loadPackageDefinition, Server, ServerCredentials } from '@grpc/grpc-js';
 import { loadSync, PackageDefinition } from '@grpc/proto-loader';
 import express, { Express } from "express";
 import bodyParser from "body-parser";
@@ -23,29 +23,64 @@ interface StatusResponse {
     ping?: number
 }
 
+function gRPCMCStatus(message: ServerInfo): Promise<StatusResponse> {
+    // gRPC client setup
+    const MCSTATUS_PROTO_PATH = './mcstatus.proto';
+    const MCSTATUS_options = {
+        keepCase: true,
+        longs: String,
+        enums: String,
+        defaults: true,
+        oneofs: true
+    }
+    const mcstatus_packageDefinition = loadSync(MCSTATUS_PROTO_PATH, MCSTATUS_options);
+    const mcstatus_commandProto = loadPackageDefinition(mcstatus_packageDefinition);
+    const mcstatus_Status: any = mcstatus_commandProto.Status;
+
+    // gRPC client
+    const client = new mcstatus_Status(
+        "0.0.0.0:50053",
+        credentials.createInsecure()
+    );
+
+    // gRPC client call
+    return new Promise((resolve, reject) => {
+        client.GetMCStatus(message, (error: any, response: any) => {
+        if (error) reject(error);
+        resolve(response);
+    })});
+}
+
+
 // Function to query game servers
 async function getStatus(request: ServerInfo): Promise<StatusResponse>  {
-    return await Gamedig.query({
-        type: request.game,
-        host: request.host,
-        // Optional port value
-        port: request?.port
-    }).then((state) => {
-        // Successful query response
-        return {
-            name: state?.name,
-            map: state?.map,
-            password: state?.password,
-            maxplayers: state?.maxplayers,
-            players: state?.players,
-            bots: state?.bots,
-            connect: state?.connect,
-            ping: state?.ping
-        };
-    }).catch((error) => {
-        // Server Offline response
-        return { name: "Server Offline" };
-    });
+    if (request.game === "minecraft") {
+        // MCStatus gRPC call
+        return await gRPCMCStatus(request);
+
+    } else {
+        return await Gamedig.query({
+            type: request.game,
+            host: request.host,
+            // Optional port value
+            port: request?.port
+        }).then((state) => {
+            // Successful query response
+            return {
+                name: state?.name,
+                map: state?.map,
+                password: state?.password,
+                maxplayers: state?.maxplayers,
+                players: state?.players,
+                bots: state?.bots,
+                connect: state?.connect,
+                ping: state?.ping
+            };
+        }).catch((error) => {
+            // Server Offline response
+            return { name: "Server Offline" };
+        });
+    }
 }
 
 // gRPC options
@@ -90,7 +125,7 @@ app.listen(REST_PORT, () => {
     console.log(`Game Server Status REST server running on port ${REST_PORT}`);
 });
 
-// Generic response
+// Default route
 app.get("/", async (req, res) => {
     try {
         res.type("text/html")
@@ -105,10 +140,11 @@ app.get("/", async (req, res) => {
                 <p>https://api.neuralnexus.dev/api/game-server-status/game-name/your.server.ip</p>
                 <p>https://api.neuralnexus.dev/api/game-server-status/game-name/your.server.ip?port=7777</p>
             `);
+    // Serverside error response
     } catch (err) {
-        // Error response
-        res.status(500);
         console.error(err);
+        res.status(500)
+        .json({ "message": "Internal Server Error", "error": err });
     }
 });
 
@@ -177,9 +213,10 @@ app.get("/:game/:host", async (req, res) => {
             res.type("application/json")
                 .json(response);
         }
+    // Serverside error response
     } catch (err) {
-        // Error response
-        res.status(500);
         console.error(err);
+        res.status(500)
+        .json({ "message": "Internal Server Error", "error": err });
     }
 });

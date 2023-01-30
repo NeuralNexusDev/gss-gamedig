@@ -1,0 +1,24 @@
+syntax="proto3";
+
+service Status {
+    rpc GetMCStatus(ServerInfo) returns (StatusResponse);
+}
+
+message ServerInfo {
+    string host = 1;
+    int32 port = 2;
+    int32 query_port = 3;
+}
+
+message Player{
+    string name = 1;
+}
+
+message StatusResponse {
+    string name = 1;
+    string map = 2;
+    int32 maxplayers = 3;
+    repeated Player players = 4;
+    string connect = 5;
+    string favicon = 6;
+}
