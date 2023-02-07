@@ -78,6 +78,7 @@ async function getStatus(request: ServerInfo): Promise<StatusResponse>  {
             };
         }).catch((error) => {
             // Server Offline response
+            console.log(error);
             return { name: "Server Offline" };
         });
     }
