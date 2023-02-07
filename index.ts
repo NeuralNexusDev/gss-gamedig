@@ -39,7 +39,7 @@ function gRPCMCStatus(message: ServerInfo): Promise<StatusResponse> {
 
     // gRPC client
     const client = new mcstatus_Status(
-        "0.0.0.0:50053",
+        "0.0.0.0:50051",
         credentials.createInsecure()
     );
 
@@ -186,12 +186,7 @@ app.get("/:game/:host", async (req, res) => {
             res.type("text/html").send(`
                 <meta content="Name: ${name}" property="og:title" />
                 <meta content="Powered by NeuralNexus.dev" property="og:site_name">
-                <meta property="og:description" content="
-                Players: ${players}
-                Game: ${game}
-                Map: ${map}
-                Connect: ${connect}
-                "/>
+                <meta property="og:description" content="Players: ${players}\nGame: ${game}\nMap: ${map}\nConnect: ${connect}"/>
                 <meta content="https://api.neuralnexus.dev/api/game-server-status/${game}/${host}/${port}" property="og:url" />
                 <meta content="https://api.neuralnexus.dev/api/" property="og:image" />
                 <meta content="#7C0014" data-react-helmet="true" name="theme-color" />
