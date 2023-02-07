@@ -16,7 +16,7 @@ const Status = commandProto.Status;
 
 export async function Client(message) {
     const client = new Status(
-    "0.0.0.0:50052",
+    "0.0.0.0:50053",
     credentials.createInsecure()
     );
 

@@ -106,7 +106,7 @@ server.addService((<any>commandProto.Status).service, {
 });
 
 // Start gRPC server
-const GRPC_PORT: number = <number><unknown>process.env.GRPC_PORT || 50051
+const GRPC_PORT: number = <number><unknown>process.env.GRPC_PORT || 50053
 server.bindAsync(
     `0.0.0.0:${GRPC_PORT}`,
     ServerCredentials.createInsecure(),
@@ -117,7 +117,7 @@ server.bindAsync(
 );
 
 // Configure and start REST/Web server
-const REST_PORT: number = <number><unknown>process.env.REST_PORT || 3000
+const REST_PORT: number = <number><unknown>process.env.REST_PORT || 3003
 const app: Express = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -187,11 +187,11 @@ app.get("/:game/:host", async (req, res) => {
                 <meta content="Name: ${name}" property="og:title" />
                 <meta content="Powered by NeuralNexus.dev" property="og:site_name">
                 <meta property="og:description" content="
-                        Players: ${players}
-                        Game: ${game}
-                        Map: ${map}
-                        Connect: ${connect}
-                        "/>
+                Players: ${players}
+                Game: ${game}
+                Map: ${map}
+                Connect: ${connect}
+                "/>
                 <meta content="https://api.neuralnexus.dev/api/game-server-status/${game}/${host}/${port}" property="og:url" />
                 <meta content="https://api.neuralnexus.dev/api/" property="og:image" />
                 <meta content="#7C0014" data-react-helmet="true" name="theme-color" />
