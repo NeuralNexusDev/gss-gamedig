@@ -37,9 +37,11 @@ function gRPCMCStatus(message: ServerInfo): Promise<StatusResponse> {
     const mcstatus_commandProto = loadPackageDefinition(mcstatus_packageDefinition);
     const mcstatus_Status: any = mcstatus_commandProto.Status;
 
+    const MCSTATUS_GRPC_PORT: number = <number><unknown>process.env.MCSTATUS_GRPC_PORT || 50051
+
     // gRPC client
     const client = new mcstatus_Status(
-        "0.0.0.0:50051",
+        `0.0.0.0:${MCSTATUS_GRPC_PORT}`,
         credentials.createInsecure()
     );
 
