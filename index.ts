@@ -23,6 +23,7 @@ interface StatusResponse {
     ping?: number
 }
 
+// MCStatus gRPC call
 function gRPCMCStatus(message: ServerInfo): Promise<StatusResponse> {
     // gRPC client setup
     const MCSTATUS_PROTO_PATH = './mcstatus.proto';
@@ -33,8 +34,8 @@ function gRPCMCStatus(message: ServerInfo): Promise<StatusResponse> {
         defaults: true,
         oneofs: true
     }
-    const mcstatus_packageDefinition = loadSync(MCSTATUS_PROTO_PATH, MCSTATUS_options);
-    const mcstatus_commandProto = loadPackageDefinition(mcstatus_packageDefinition);
+    const mcstatus_packageDefinition: PackageDefinition = loadSync(MCSTATUS_PROTO_PATH, MCSTATUS_options);
+    const mcstatus_commandProto: GrpcObject = loadPackageDefinition(mcstatus_packageDefinition);
     const mcstatus_Status: any = mcstatus_commandProto.Status;
 
     const MCSTATUS_GRPC_PORT: number = <number><unknown>process.env.MCSTATUS_GRPC_PORT || 50051
