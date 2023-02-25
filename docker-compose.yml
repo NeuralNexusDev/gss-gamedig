@@ -1,0 +1,14 @@
+---
+version: "3.8"
+services:
+  NN_game-server-status:
+    image: p0t4t0sandwich/neuralnexus:game-server-status
+    container_name: NN_game-server-status
+    environment:
+      - TZ=UTC
+      - GRPC_PORT=50053
+      - REST_PORT=3003
+      - GAMEQ_REST_PORT=3013
+      - MCSTATUS_GRPC_PORT=3013
+    network_mode: "host"
+    restart: unless-stopped
