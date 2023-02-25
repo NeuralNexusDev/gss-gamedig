@@ -1,4 +1,4 @@
-import { getServerStatus, ServerInfo, StatusResponse } from "../lib/serverstatus.js";
+import { getServerStatus, ServerInfo, StatusResponse } from "../lib/serverStatus.js";
 
 // Test getServerStatus
 describe("getServerStatus Online Response", () => {

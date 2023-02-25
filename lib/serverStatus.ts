@@ -1,7 +1,7 @@
 import Gamedig from 'gamedig';
 
 import { gRPCGetMCStatus } from './GetMCStatusGRPCClient.js';
-import { gamedigType, gameQType } from './supported.js';
+import { gamedigType, gameQType } from './supportedGames.js';
 
 
 // Interfaces matching the protobuffs

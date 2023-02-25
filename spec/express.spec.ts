@@ -1,4 +1,4 @@
-import { defaultRoute, serverStatusRoute } from "../lib/express.js";
+import { defaultRoute, serverStatusRoute, playerCountRoute} from "../lib/express.js";
 
 
 describe("defaultRoute function", () => {
@@ -93,5 +93,41 @@ describe("serverStatusRoute", () => {
         expect(res.type).toBe("application/json");
         expect(res.status).toBe(400);
         expect(res.text).toContain("Unsupported Accept Headers");
+    });
+});
+
+describe("playerCountRoute", () => {
+    const req = {
+        body: {
+            serverInfo: [
+                {
+                    "game": "7d2d",
+                    "host": "7dtd.thexpnetwork.com",
+                    "port": 27015
+                },
+                {
+                    "game": "arkse",
+                    "host": "ark.thexpnetwork.com",
+                    "port": 27015
+                }
+            ]
+        },
+        get: {}
+    };
+    const res = { text: {}, type: {}, status: {}, send: {}, json: {} };
+    const next = () => { return; };
+
+    it("responds to /player-count/", async () => {
+        req.get = (header) => { return req[header]; }
+
+        res.type = (type) => { res.type = type; return res; };
+        res.status = (status) => { res.status = status; return res; };
+        res.json = (body) => { res.text = JSON.stringify(body); return res; };
+
+        await playerCountRoute(req, res, next);
+
+        expect(res.type).toBe("application/json");
+        expect(res.status).toBe(200);
+        expect(res.text).toBeDefined();
     });
 });

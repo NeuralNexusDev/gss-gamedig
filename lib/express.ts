@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
-import Gamedig from 'gamedig';
 
-import { ServerInfo, getServerStatus } from './serverstatus.js';
+import { ServerInfo, getServerStatus } from './serverStatus.js';
+import { queryPlayerCount, getPlayerCount, PlayerCount, PlayerCountResponse } from './playerCount.js';
 
 
 // Default route function
@@ -14,6 +14,7 @@ export async function defaultRoute(req, res, next) {
                 <title>NeuralNexus.dev</title>
                 <h1>How To:</h1>
                 <a href="https://github.com/gamedig/node-gamedig#supported">Supported Games (Gamedig)</a>
+                <br>
                 <a href="https://github.com/Austinb/GameQ/tree/v3/src/GameQ/Protocols">Supported Games (GameQ)</a>
                 <br>
                 <a href="https://api.neuralnexus.dev/api/mcstatus/">Minecraft Status API</a>
@@ -34,7 +35,7 @@ export async function defaultRoute(req, res, next) {
 export async function serverStatusRoute(req, res, next) {
     try {
         // Parameters
-        const game: Gamedig.Type = <Gamedig.Type>req.params.game;
+        const game: string = req.params.game;
         const host: string = req.params.host;
         const port: number = <number><unknown>req.query?.port;
 
@@ -127,6 +128,35 @@ export async function serverStatusRoute(req, res, next) {
     }
 }
 
+// Get player count route function
+export async function playerCountRoute(req, res, next) {
+    try {
+        // get serverInfo from body
+        const serverInfo: ServerInfo[] = req.body.serverInfo;
+
+        // get player counts from serverInfo
+        const playerCounts: PlayerCountResponse = await getPlayerCount(serverInfo);
+
+        if (playerCounts.success) {
+            // Normal response
+            res.status(200);
+        } else {
+            // Server offline response
+            res.status(400);
+        }
+
+        res.type("application/json")
+            .json(playerCounts);
+
+    // Serverside error response
+} catch (err) {
+    console.log(err);
+    res.type("application/json")
+        .status(500)
+        .json({ "message": "Internal Server Error", "error": err });
+}
+
+}
 
 // Configure/start REST API/Webserver
 export const app = express();
@@ -138,3 +168,6 @@ app.get("/", defaultRoute);
 
 // Main data route, game and host are required, port is optional
 app.get("/:game/:host", serverStatusRoute);
+
+// Get player count route, game and host are required, port is optional
+app.get("/player-count/", playerCountRoute);

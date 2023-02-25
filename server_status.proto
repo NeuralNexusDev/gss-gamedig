@@ -2,6 +2,7 @@ syntax="proto3";
 
 service Status {
     rpc GetStatus(ServerInfo) returns (StatusResponse);
+    rpc GetPlayerCount(ServerInfoList) returns (PlayerCountResponse);
 }
 
 message ServerInfo {
@@ -10,6 +11,11 @@ message ServerInfo {
     int32 port = 3;
 }
 
+message ServerInfoList {
+    repeated ServerInfo servers = 1;
+}
+
+// Protos for GetStatus
 message Player{
     string name = 1;
     int32 ping = 2;
@@ -27,4 +33,18 @@ message StatusResponse {
     repeated Player bots = 6;
     string connect = 7;
     int32 ping = 8;
+}
+
+// Protos for GetPlayerCount
+message PlayerCount {
+    string name = 1;
+    string game = 2;
+    bool online = 3;
+    int32 count = 4;
+}
+
+message PlayerCountResponse {
+    repeated PlayerCount players = 1;
+    int32 total = 2;
+    bool success = 3;
 }
