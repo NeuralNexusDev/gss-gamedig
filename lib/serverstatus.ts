@@ -5,9 +5,13 @@ import { gRPCGetMCStatus } from './GetMCStatusGRPCClient.js';
 
 // Interfaces matching the protobuffs
 export interface ServerInfo {
-    game: Gamedig.Type,
-    host: string,
-    port: number
+    game?: string,
+    host?: string,
+    port?: number
+}
+
+interface Player {
+    name?: string | undefined;
 }
 
 export interface StatusResponse {
@@ -15,8 +19,8 @@ export interface StatusResponse {
     map?: string,
     password?: boolean,
     maxplayers?: number,
-    players?: Gamedig.Player[],
-    bots?: Gamedig.Player[],
+    players?: Player[],
+    bots?: Player[],
     connect?: string,
     ping?: number
 }
@@ -30,7 +34,7 @@ export async function getServerStatus(request: ServerInfo): Promise<StatusRespon
 
     } else {
         return await Gamedig.query({
-            type: request.game,
+            type: <Gamedig.Type>request.game,
             host: request.host,
             // Optional port value
             port: request?.port

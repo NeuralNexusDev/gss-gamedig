@@ -13,7 +13,8 @@ export async function defaultRoute(req, res, next) {
             .send(`
                 <title>NeuralNexus.dev</title>
                 <h1>How To:</h1>
-                <a href="https://github.com/gamedig/node-gamedig#supported">Supported Games</a>
+                <a href="https://github.com/gamedig/node-gamedig#supported">Supported Games (Gamedig)</a>
+                <a href="https://github.com/Austinb/GameQ/tree/v3/src/GameQ/Protocols">Supported Games (GameQ)</a>
                 <br>
                 <a href="https://api.neuralnexus.dev/api/mcstatus/">Minecraft Status API</a>
                 <br>

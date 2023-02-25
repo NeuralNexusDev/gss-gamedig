@@ -21,7 +21,7 @@ jobs:
     name: Build
     needs: test
     runs-on: ubuntu-latest
-    environment: server-status-api
+    environment: game-server-status
     steps:
       -
         name: Set up QEMU
@@ -40,4 +40,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/neuralnexus:server-status-api
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/neuralnexus:game-server-status

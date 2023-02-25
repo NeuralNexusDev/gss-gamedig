@@ -1,13 +1,16 @@
 import { credentials, GrpcObject, loadPackageDefinition } from '@grpc/grpc-js';
 import { loadSync, PackageDefinition } from '@grpc/proto-loader';
-import Gamedig from 'gamedig';
 
 
 // Interfaces matching the protobuffs
 export interface ServerInfo {
-    game: Gamedig.Type,
-    host: string,
-    port: number
+    game?: string,
+    host?: string,
+    port?: number
+}
+
+interface Player {
+    name?: string | undefined;
 }
 
 export interface StatusResponse {
@@ -15,8 +18,8 @@ export interface StatusResponse {
     map?: string,
     password?: boolean,
     maxplayers?: number,
-    players?: Gamedig.Player[],
-    bots?: Gamedig.Player[],
+    players?: Player[],
+    bots?: Player[],
     connect?: string,
     ping?: number
 }
