@@ -122,13 +122,15 @@ async function getGameQ(serverInfo: ServerInfo): Promise<StatusResponse> {
 
 // Function to query game servers
 export async function getServerStatus(serverInfo: ServerInfo): Promise<StatusResponse>  {
-    if (serverInfo.game === "minecraft") {
+    serverInfo.game = serverInfo.game?.toLowerCase();
+    if (["minecraft", "bedrock", "minecraftpe", "minecraftbe"].includes(serverInfo.game)) {
         // MCStatus gRPC call
         return await gRPCGetMCStatus(serverInfo);
 
     } else if (gamedigType.includes(serverInfo.game)) {
         // Gamedig query
         return await getGameDig(serverInfo);
+
     } else if (gameQType.includes(serverInfo.game)) {
         // GameQ query
         return await getGameQ(serverInfo);
