@@ -39,6 +39,11 @@ export async function serverStatusRoute(req, res, next) {
         const host: string = req.params.host;
         const port: number = <number><unknown>req.query?.port;
 
+        // if (game === "player-count") {
+        //     next();
+        //     return;
+        // }
+
         // Server info object
         const serverInfo: ServerInfo = {
             game: game,
@@ -133,6 +138,8 @@ export async function playerCountRoute(req, res, next) {
     try {
         // get serverInfo from body
         const serverInfo: ServerInfo[] = req.body.serverInfo;
+
+        console.log(serverInfo);
 
         // get player counts from serverInfo
         const playerCounts: PlayerCountResponse = await getPlayerCount(serverInfo);

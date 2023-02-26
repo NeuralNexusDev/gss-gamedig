@@ -75,8 +75,9 @@ export function gRPCGetStatus(message: ServerInfo): Promise<StatusResponse> {
 export function gRPCGetPlayerCount(message: ServerInfo[]): Promise<PlayerCountResponse> {
     // gRPC client call
     return new Promise((resolve, reject) => {
-        client.GetPlayerCount(message, (error: any, response: any) => {
+        client.GetPlayerCount({ "servers": message }, (error: any, response: any) => {
             if (error) reject(error);
+
             resolve(response);
         });
     });

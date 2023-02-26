@@ -58,6 +58,11 @@ export async function queryPlayerCount(serverInfo: ServerInfo): Promise<PlayerCo
 export async function getPlayerCount(serverList: ServerInfo[]): Promise<PlayerCountResponse> {
     // Get the player count from each server
     try {
+        // Workaround to get the server list from gRPC calls, might rewrite this into the body.params
+        if (serverList.hasOwnProperty("servers")) {
+            serverList = serverList["servers"];
+        }
+
         const playerCounts = await Promise.all(serverList.map(queryPlayerCount));
         const playerCountResponse: PlayerCountResponse = {
             player_counts: playerCounts,

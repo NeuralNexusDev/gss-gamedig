@@ -16,7 +16,7 @@ message ServerInfoList {
 }
 
 // Protos for GetStatus
-message Player{
+message Player {
     string name = 1;
     int32 ping = 2;
     int32 score = 3;
@@ -44,7 +44,7 @@ message PlayerCount {
 }
 
 message PlayerCountResponse {
-    repeated PlayerCount players = 1;
+    repeated PlayerCount player_counts = 1;
     int32 total = 2;
     bool success = 3;
 }
