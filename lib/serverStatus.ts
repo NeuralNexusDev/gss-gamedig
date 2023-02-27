@@ -125,7 +125,11 @@ export async function getServerStatus(serverInfo: ServerInfo): Promise<StatusRes
     serverInfo.game = serverInfo.game?.toLowerCase();
     if (["minecraft", "bedrock", "minecraftpe", "minecraftbe"].includes(serverInfo.game)) {
         // MCStatus gRPC call
-        return await gRPCGetMCStatus(serverInfo);
+        if (serverInfo.game === "minecraft") {
+            return await gRPCGetMCStatus(serverInfo);
+        } else {
+            return await gRPCGetMCStatus({ host: serverInfo.host, port: serverInfo.port, is_bedrock: true });
+        }
 
     } else if (gamedigType.includes(serverInfo.game)) {
         // Gamedig query
