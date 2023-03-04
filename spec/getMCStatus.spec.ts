@@ -1,4 +1,4 @@
-import { gRPCGetMCStatus, ServerInfo, StatusResponse } from "../lib/GetMCStatusGRPCClient.js";
+import { getMCStatus, ServerInfo, StatusResponse } from "../lib/getMCStatus.js";
 
 
 // Test getMCStatus
@@ -9,7 +9,7 @@ describe("getMCStatus Online Response", () => {
             port: 25565
         };
 
-        const status: StatusResponse = await gRPCGetMCStatus(serverInfo);
+        const status: StatusResponse = await getMCStatus(serverInfo);
 
         expect(status.name).not.toContain("Server Offline");
         expect(status.map).toBeDefined();
@@ -27,7 +27,7 @@ describe("getMCStatus Offline Response", () => {
             port: 25565
         };
 
-        const status: StatusResponse = await gRPCGetMCStatus(serverInfo);
+        const status: StatusResponse = await getMCStatus(serverInfo);
 
         expect(status.name).toContain("Server Offline");
         expect(status.map).toBe("Minecraft");

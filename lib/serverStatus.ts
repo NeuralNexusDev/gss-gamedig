@@ -1,6 +1,6 @@
 import Gamedig from 'gamedig';
 
-import { gRPCGetMCStatus } from './GetMCStatusGRPCClient.js';
+import { getMCStatus } from './getMCStatus.js';
 import { gamedigType, gameQType } from './supportedGames.js';
 
 
@@ -126,9 +126,9 @@ export async function getServerStatus(serverInfo: ServerInfo): Promise<StatusRes
     if (["minecraft", "bedrock", "minecraftpe", "minecraftbe"].includes(serverInfo.game)) {
         // MCStatus gRPC call
         if (serverInfo.game === "minecraft") {
-            return await gRPCGetMCStatus(serverInfo);
+            return await getMCStatus(serverInfo);
         } else {
-            return await gRPCGetMCStatus({ host: serverInfo.host, port: serverInfo.port, is_bedrock: true });
+            return await getMCStatus({ host: serverInfo.host, port: serverInfo.port, is_bedrock: true });
         }
 
     } else if (gamedigType.includes(serverInfo.game)) {

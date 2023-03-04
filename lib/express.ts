@@ -5,6 +5,10 @@ import { ServerInfo, getServerStatus } from './serverStatus.js';
 import { queryPlayerCount, getPlayerCount, PlayerCount, PlayerCountResponse } from './playerCount.js';
 
 
+// Cooldown Variables
+const errCooldown: number = 0;
+
+
 // Default route function
 export async function defaultRoute(req, res, next) {
     try {
@@ -39,17 +43,13 @@ export async function serverStatusRoute(req, res, next) {
         const host: string = req.params.host;
         const port: number = <number><unknown>req.query?.port;
 
-        // if (game === "player-count") {
-        //     next();
-        //     return;
-        // }
-
         // Server info object
         const serverInfo: ServerInfo = {
             game: game,
             host: host,
             port: port
         };
+
         // Status response
         const response = await getServerStatus(serverInfo);
 
