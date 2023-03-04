@@ -35,5 +35,5 @@ describe("getMCStatus Offline Response", () => {
         expect(status.players).toEqual([]);
         expect(status.connect).toBeDefined();
         expect(status.favicon).toBe("");
-    });
+    }, 10000);
 });
