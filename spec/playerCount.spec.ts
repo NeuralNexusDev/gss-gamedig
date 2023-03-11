@@ -36,7 +36,7 @@ describe("queryPlayerCount", () => {
     it("should return error response", async () => {
         const serverInfo: ServerInfo = {
             game: "arkse",
-            host: "example.com",
+            host: "example.test",
             port: 27020
         };
 

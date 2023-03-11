@@ -20,7 +20,7 @@ describe("defaultRoute function", () => {
 
         expect(res.type).toBe("text/html");
         expect(res.status).toBe(200);
-        expect(res.text).toContain("https://api.neuralnexus.dev/api/game-server-status/game-name/your.server.ip");
+        expect(res.text).toContain("game-server-status/game-name/your.server.ip");
     });
 });
 

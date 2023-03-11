@@ -39,7 +39,7 @@ describe("getMCStatus Offline Response", () => {
     it("should return a status response", async () => {
         const serverInfo: ServerInfo = {
             game: "arkse",
-            host: "example.com",
+            host: "example.test",
             port: 7777
         };
 

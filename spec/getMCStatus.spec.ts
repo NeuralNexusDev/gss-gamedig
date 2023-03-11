@@ -23,7 +23,7 @@ describe("getMCStatus Online Response", () => {
 describe("getMCStatus Offline Response", () => {
     it("should return a status response", async () => {
         const serverInfo: ServerInfo = {
-            host: "example.com",
+            host: "example.test",
             port: 25565
         };
 

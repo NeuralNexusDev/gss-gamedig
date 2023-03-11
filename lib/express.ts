@@ -1,12 +1,12 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, Router } from "express";
 import bodyParser from "body-parser";
 
 import { ServerInfo, getServerStatus } from './serverStatus.js';
 import { queryPlayerCount, getPlayerCount, PlayerCount, PlayerCountResponse } from './playerCount.js';
 
 
-// Cooldown Variables
-const errCooldown: number = 0;
+const apiURL: string = process.env.API_URL || "https://api.neuralnexus.dev/api";
+const apiVersion: string = process.env.API_VERSION || "v1";
 
 
 // Default route function
@@ -75,8 +75,8 @@ export async function serverStatusRoute(req, res, next) {
                 <meta content="Name: ${name}" property="og:title" />
                 <meta content="Powered by NeuralNexus.dev" property="og:site_name">
                 <meta property="og:description" content="Players: ${players}\nGame: ${game}\nMap: ${map}\nConnect: ${connect}"/>
-                <meta content="https://api.neuralnexus.dev/api/game-server-status/${game}/${host}/${port}" property="og:url" />
-                <meta content="https://api.neuralnexus.dev/api/" property="og:image" />
+                <meta content="${apiURL}/${apiVersion}/game-server-status/${game}/${host}/${port}" property="og:url" />
+                <meta content="${apiURL}/${apiVersion}/" property="og:image" />
                 <meta content="#7C0014" data-react-helmet="true" name="theme-color" />
             `);
         } else if (req.get("accept").includes("text/html")) {
@@ -165,16 +165,18 @@ export async function playerCountRoute(req, res, next) {
 
 }
 
-// Configure/start REST API/Webserver
+// Configure REST API/Webserver
 export const app = express();
+export const router = Router();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use("", router);
 
 // Default route
-app.get("/", defaultRoute);
+router.get("/", defaultRoute);
 
 // Main data route, game and host are required, port is optional
-app.get("/:game/:host", serverStatusRoute);
+router.get("/:game/:host", serverStatusRoute);
 
 // Get player count route, game and host are required, port is optional
-app.get("/player-count/", playerCountRoute);
+router.get("/player-count/", playerCountRoute);
