@@ -3,7 +3,4 @@ Dockerfile
 .env
 .gitignore
 .dockerignore
-docker-compose.yml
-gRPC_client.js
 .github
-docker-compose.yml.example

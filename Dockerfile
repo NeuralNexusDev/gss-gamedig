@@ -1,15 +1,16 @@
-FROM node:18
+FROM oven/bun:alpine as build
+WORKDIR /usr/src/app
 
-WORKDIR /app
+COPY . .
+RUN bun install --frozen-lockfile --production
+RUN bun build ./index.js --outdir ./dist --target bun
 
-COPY package.json ./
+FROM node:21-alpine as release
 
-RUN npm install
+ENV NODE_ENV=production
 
-COPY ./lib ./lib
+# COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY . .
 
-COPY ./* ./
-
-RUN /app/node_modules/typescript/bin/tsc -p /app/tsconfig.build.json
-
-CMD ["node", "./dist/index.js"]
+ENTRYPOINT [ "node", "index.js" ]

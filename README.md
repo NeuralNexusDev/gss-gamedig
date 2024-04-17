@@ -1,2 +1,3 @@
-# server-status-api
-API to grab the status of different game servers
+# gss-gamedig
+
+A simple REST wrapper for the GameDig game status library
