@@ -5,7 +5,7 @@ COPY . .
 RUN bun install --frozen-lockfile --production
 RUN bun build ./index.js --outdir ./dist --target bun
 
-FROM node:21-alpine as release
+FROM node:22-alpine as release
 
 ENV NODE_ENV=production
 
